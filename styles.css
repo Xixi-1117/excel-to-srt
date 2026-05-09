@@ -1,0 +1,105 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: #f5f5f7;
+  color: #1d1d1f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+}
+.container {
+  width: 90%;
+  max-width: 480px;
+  text-align: center;
+}
+h1 {
+  font-size: 22px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+.settings {
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.settings label {
+  font-size: 15px;
+  color: #3a3a3c;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.settings input {
+  width: 64px;
+  padding: 6px 8px;
+  font-size: 15px;
+  border: 1px solid #d1d1d6;
+  border-radius: 8px;
+  text-align: center;
+  outline: none;
+}
+.settings input:focus {
+  border-color: #007aff;
+}
+.settings .hint {
+  font-size: 12px;
+  color: #8e8e93;
+}
+.drop-zone {
+  border: 2px dashed #c7c7cc;
+  border-radius: 16px;
+  padding: 50px 20px;
+  background: #ffffff;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.drop-zone.dragover {
+  border-color: #007aff;
+  background: #e6f2ff;
+}
+.drop-icon {
+  font-size: 40px;
+  color: #c7c7cc;
+  margin-bottom: 10px;
+  line-height: 1;
+  transition: color 0.2s;
+}
+.drop-zone.dragover .drop-icon {
+  color: #007aff;
+}
+.drop-zone p {
+  font-size: 16px;
+  color: #3a3a3c;
+}
+.drop-zone .hint {
+  font-size: 13px;
+  margin-top: 8px;
+  color: #8e8e93;
+}
+.status {
+  margin-top: 20px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  word-break: break-all;
+}
+.status.info {
+  background: #e6f2ff;
+  color: #007aff;
+}
+.status.success {
+  background: #e6f9e6;
+  color: #248a3d;
+}
+.status.error {
+  background: #ffe6e6;
+  color: #d70015;
+}

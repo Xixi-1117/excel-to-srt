@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Excel 转 SRT 工具</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Excel 转 SRT 字幕工具</h1>
+
+    <div class="settings">
+      <label for="fps">帧率 (fps):</label>
+      <input type="number" id="fps" value="25" min="1" max="120">
+      <p class="hint">表格要求恰好 3 列：入点时间码 | 出点时间码 | 字幕内容</p>
+    </div>
+
+    <div id="dropZone" class="drop-zone">
+      <div class="drop-icon">+</div>
+      <p>把 Excel 或 CSV 文件拖到这里</p>
+      <p class="hint">支持 .xlsx / .xls / .csv</p>
+    </div>
+
+    <div id="status" class="status"></div>
+  </div>
+  <script src="renderer.js"></script>
+</body>
+</html>
