@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const XLSX = require('xlsx');
@@ -143,4 +143,18 @@ ipcMain.handle('convert', async (event, filePath, fps) => {
   } catch (err) {
     return { success: false, error: err.message };
   }
+});
+
+ipcMain.handle('select-file', async (event) => {
+  const win = BrowserWindow.getFocusedWindow();
+  const result = await dialog.showOpenDialog(win, {
+    properties: ['openFile'],
+    filters: [
+      { name: 'Excel/CSV', extensions: ['xlsx', 'xls', 'csv'] }
+    ]
+  });
+  if (result.canceled || result.filePaths.length === 0) {
+    return { canceled: true };
+  }
+  return { canceled: false, filePath: result.filePaths[0] };
 });

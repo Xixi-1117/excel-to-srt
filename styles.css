@@ -91,6 +91,41 @@ h1 {
   justify-content: center;
   word-break: break-all;
 }
+.or-divider {
+  margin: 16px 0;
+  font-size: 14px;
+  color: #8e8e93;
+  position: relative;
+}
+.or-divider::before,
+.or-divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 80px;
+  height: 1px;
+  background: #d1d1d6;
+}
+.or-divider::before { left: 50%; margin-left: -130px; }
+.or-divider::after { right: 50%; margin-right: -130px; }
+
+.select-btn {
+  padding: 12px 32px;
+  font-size: 15px;
+  color: #ffffff;
+  background: #007aff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.select-btn:hover {
+  background: #0056b3;
+}
+.select-btn:active {
+  background: #004494;
+}
+
 .status.info {
   background: #e6f2ff;
   color: #007aff;
