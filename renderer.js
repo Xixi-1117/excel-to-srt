@@ -30,6 +30,10 @@ dropZone.addEventListener('drop', async (e) => {
   if (files.length === 0) return;
 
   const file = files[0];
+  if (!file.path) {
+    showStatus('无法获取文件路径，请从 Finder 文件夹中拖放文件，不要从微信/QQ/浏览器直接拖放', 'error');
+    return;
+  }
   const fps = parseInt(fpsInput.value, 10) || 25;
 
   showStatus('正在处理，请稍候...', 'info');

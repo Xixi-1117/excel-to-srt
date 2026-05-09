@@ -58,6 +58,9 @@ function convertTimecode(tc, fps) {
 
 ipcMain.handle('convert', async (event, filePath, fps) => {
   try {
+    if (!filePath || typeof filePath !== 'string') {
+      throw new Error('文件路径无效，请从 Finder 文件夹中拖放文件');
+    }
     const ext = path.extname(filePath).toLowerCase();
     if (!['.xlsx', '.xls', '.csv'].includes(ext)) {
       throw new Error('不支持的文件格式，仅支持 .xlsx、.xls 和 .csv');
