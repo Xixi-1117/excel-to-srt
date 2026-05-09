@@ -37,22 +37,56 @@ async function doConvert(filePath) {
   }
 }
 
+function resolveFilePath(file, dataTransfer) {
+  // 方法1：Electron 官方推荐方式 webUtils.getPathForFile
+  if (window.api.getPathForFile) {
+    const p = window.api.getPathForFile(file);
+    if (p) return p;
+  }
+
+  // 方法2：File.path（部分场景有效）
+  if (file.path) return file.path;
+
+  // 方法3：从 dataTransfer 获取 URI list
+  const uriList = dataTransfer.getData('text/uri-list');
+  if (uriList) {
+    const uri = uriList.split('\n')[0].trim();
+    if (uri.startsWith('file://')) {
+      let p = decodeURIComponent(uri.replace(/^file:\/\//, ''));
+      // Windows 路径处理
+      if (/^[a-zA-Z]:/.test(p)) {
+        return p.replace(/\//g, '\\');
+      }
+      return p;
+    }
+    return uri;
+  }
+
+  // 方法4：从 dataTransfer 获取纯文本路径
+  const plain = dataTransfer.getData('text/plain');
+  if (plain && plain.trim()) return plain.trim();
+
+  return null;
+}
+
 dropZone.addEventListener('drop', async (e) => {
   const files = e.dataTransfer.files;
   if (files.length === 0) return;
 
   const file = files[0];
-  if (!file.path) {
+  const filePath = resolveFilePath(file, e.dataTransfer);
+
+  if (!filePath) {
     const isWin = navigator.platform.toLowerCase().includes('win');
     showStatus(
       isWin
-        ? '无法获取文件路径，请点击下方的"选择文件"按钮，或把文件复制到本地后再拖放'
+        ? '无法获取文件路径，请点击下方的"选择文件"按钮'
         : '无法获取文件路径，请从 Finder 文件夹中拖放文件，不要从微信/QQ/浏览器直接拖放',
       'error'
     );
     return;
   }
-  await doConvert(file.path);
+  await doConvert(filePath);
 });
 
 selectBtn.addEventListener('click', async () => {
