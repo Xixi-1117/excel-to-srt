@@ -94,10 +94,24 @@ ipcMain.handle('convert', async (event, filePath, fps) => {
     if (!firstSheetName) {
       throw new Error('表格中没有工作表');
     }
-    const worksheet = workbook.Sheets[firstSheetName];
+    let worksheet = workbook.Sheets[firstSheetName];
 
     // 转为二维数组，defval 保证空单元格为空字符串
-    const data = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: '' });
+    let data = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: '' });
+
+    // 检测是否中文乱码（GBK 被误读为 Latin-1 的特征：连续 Latin-1 扩展字符）
+    const sampleRow = data.find(row => row.some(cell => String(cell).trim() !== '')) || data[0];
+    const sampleText = String(sampleRow?.[0] || '');
+    if (/[À-ÿ]{4,}/.test(sampleText)) {
+      // 检测到乱码，用 GBK (codepage 936) 重新读取
+      try {
+        workbook = XLSX.readFile(filePath, { type: 'file', codepage: 936 });
+        worksheet = workbook.Sheets[workbook.SheetNames[0]];
+        data = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: '' });
+      } catch (e) {
+        // 如果 codepage 读取失败，保持原来的数据
+      }
+    }
 
     // 过滤掉完全空白的行
     const validRows = data.filter(row => row.some(cell => String(cell).trim() !== ''));
